@@ -1,4 +1,4 @@
-const Studentdb = require('../models/schema')
+const { Studentdb } = require('../models/schema')
 
 const StudBooks = [
   {
@@ -29,36 +29,51 @@ const AuthorDetails = [
 const resolvers = {
   Query: {
     // GET
-    getBooks: () => StudBooks,
-    getAuthors: () => { return AuthorDetails },
+    getBooks: async () => await Studentdb.find(),
+    getAuthors: async () => { return await AuthorDetails },
   },
 
   Mutation: {
     // POST
     addBooks: async (parent, args, context, info) => {
       const { title, author } = args.post
-      const post = await new StudBooks({ title, author }).save()
+      const post = await new Studentdb({ title, author })
+      await post.save()
       return post
+      // const post = StudBooks.push({ title, author })
+      // return post
     },
 
     // UPDATE
     updateBooks: async (parent, args, context, info) => {
-      const {id} = args
+      const { id } = args
       const { title, author } = args.post
-      const post = await StudBooks.findByIdAndUpdate(
+      const updates = {}
+      if (title !== undefined) { updates.title = title }
+      if (author !== undefined) { author.title = author }
+      console.log(id)
+      const post = await Studentdb.findByIdAndUpdate(
         id,
-        { title, author },
+        updates,
         { new: true },
-        )
+      )
       return post
+      // console.log(id)
+      // StudBooks[id].title({ title });
+      // StudBooks[id].author({ author });
+      // const post = StudBooks[id];
+      // return post
     },
 
     // DELETE  
     deleteBooks: async (parent, args, context, info) => {
-    const {id} = args
-    const post = await StudBooks.findByIdAndDelete(id)
-    return {post,message:'Deleted'}
-  },
+      const { id } = args
+      console.log(id)
+      const post = await Studentdb.findByIdAndDelete(id)
+      return post
+      // const post = StudBooks.splice(id, 1);
+      // return 200
+    },
 
   }, //Mutation End
 

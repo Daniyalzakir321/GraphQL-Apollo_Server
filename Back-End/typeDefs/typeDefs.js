@@ -1,10 +1,12 @@
-const { gql } = require('apollo-server');
+// const { gql } = require('apollo-server');
+const { ApolloServer, gql }= require('apollo-server-express');
+
 
 const typeDefs = gql`
 #Define Schema Type
 # ! = Necessary Field
 type Book {
-  id: Int
+  id: ID
   title: String
   author: String
 }
@@ -25,7 +27,7 @@ type Query {
 
 
 input AddBooks{
-  id: Int
+  id: String
   title: String
   author: String
 }
@@ -33,9 +35,9 @@ type Mutation {
   #POST
   addBooks( post:AddBooks ):Book
   #UPDATE
-  updateBooks( id:Int, post:AddBooks ):Book
+  updateBooks( id:String, post:AddBooks ):Book
   #DELETE
-  deleteBooks( id:Int ):Int
+  deleteBooks( id:String ):String
 }
 `;
 

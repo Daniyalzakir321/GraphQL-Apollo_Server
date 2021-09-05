@@ -30,7 +30,8 @@ const GET_BOOKS = gql`
 const ADD_BOOKS = gql`
   mutation addBooks( $title: String!, $author: String! ) {
     addBooks(post: { title: $title, author: $author}) {
-      id
+   #id not needed beacause coming from mongo-db
+      id 
       title
       author
     }
@@ -38,8 +39,8 @@ const ADD_BOOKS = gql`
 `;
 
 const UPDATE_BOOKS = gql`
-  mutation updateBooks($id: id!, $title: String!, $author: String! ) {
-    updateBooks(id: $id ,post: { title: $title, author: $author}) {
+  mutation updateBooks($id: String, $title: String, $author: String ) {
+    updateBooks(id: $String ,post: { title: $title, author: $author}) {
       id
       title
       author
@@ -48,8 +49,8 @@ const UPDATE_BOOKS = gql`
 `;
 
 const DELETE_BOOKS = gql`
-  mutation deleteBooks( $id: Int! ) {
-    deleteBooks( id: $id)
+  mutation deleteBooks( $id: String ) {
+    deleteBooks( id: $String)
   }
 `;
 

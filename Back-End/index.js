@@ -1,27 +1,25 @@
 
 const { ApolloServer, gql } = require('apollo-server');
-const resolvers= require('./resolvers/resolvers')
-const typeDefs= require('./typeDefs/typeDefs')
-const Userdb= require('./models/schema')
+const resolvers = require('./resolvers/resolvers');
+const typeDefs = require('./typeDefs/typeDefs');
+const mongoose = require('mongoose');
 
-const mongoose = require('mongoose')
-URL=''
+URL = '';
 mongoose.connect(URL, {
     useNewUrlParser: true,
-    useCreateIndex: true,
     useUnifiedTopology: true,
-}, (err) => {
+}, async (err) => {
     if (!err) {
-        console.log('MongoDB Connection Succeeded.')
+        console.log('MongoDB Connected.')
     } else {
         console.log('Error in DB connection: ' + err)
     }
 });
 
-
-
-const server = new ApolloServer({ typeDefs, resolvers });
-server.listen().then(({ url }) => {
-    console.log(`🚀  Server ready at ${url}`);
-  });
-  
+const startServer = async () => {
+    const server = new ApolloServer({ typeDefs, resolvers });
+    server.listen().then(({ url }) => {
+        console.log(`Server Running On Port: ${url}`);
+    });
+}
+startServer()

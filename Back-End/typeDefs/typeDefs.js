@@ -4,7 +4,7 @@ const typeDefs = gql`
 #Define Schema Type
 # ! = Necessary Field
 type Book {
-  id: Int!
+  id: Int
   title: String
   author: String
 }
@@ -22,6 +22,21 @@ type Query {
   getAuthors: [Authors]
 }
 
+
+
+input AddBooks{
+  id: Int
+  title: String
+  author: String
+}
+type Mutation {
+  #POST
+  addBooks( post:AddBooks ):Book
+  #UPDATE
+  updateBooks( id:Int, post:AddBooks ):Book
+  #DELETE
+  deleteBooks( id:Int ):Int
+}
 `;
 
-module.exports= typeDefs;
+module.exports = typeDefs;

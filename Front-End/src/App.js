@@ -1,6 +1,7 @@
 import './App.css';
 import { useEffect } from 'react';
 import { useQuery, useMutation, gql } from "@apollo/client";
+
 // GET
 const GET_BOOKS = gql`
   query {
@@ -14,35 +15,87 @@ const GET_BOOKS = gql`
       Name
       Author 
     },
-
   }
 `;
-const GET_AUTHOR = gql`
-  query {
-    getAuthors {
-      Id
-      Name
-      Author 
+// const GET_AUTHOR = gql`
+//   query {
+//     getAuthors {
+//       Id
+//       Name
+//       Author 
+//     }
+//   }
+// `;
+
+const ADD_BOOKS = gql`
+  mutation addBooks( $title: String!, $author: String! ) {
+    addBooks(post: { title: $title, author: $author}) {
+      id
+      title
+      author
     }
   }
 `;
 
-// const ADD_BOOKS = gql`
-//   mutation AddBooks($title: String!) {
-//     addBooks(title: $title) {
-//       title
-//     }
-//   }
-// `;
+const UPDATE_BOOKS = gql`
+  mutation updateBooks($id: id!, $title: String!, $author: String! ) {
+    updateBooks(id: $id ,post: { title: $title, author: $author}) {
+      id
+      title
+      author
+    }
+  }
+`;
+
+const DELETE_BOOKS = gql`
+  mutation deleteBooks( $id: Int! ) {
+    deleteBooks( id: $id)
+  }
+`;
+
 function App() {
   useEffect(() => {
   }, [])
 
-  const { loading, error, data } = useQuery(GET_BOOKS);
+  const { loading, error, data } = useQuery(GET_BOOKS)
   console.log("data=>", data)
   // const { getBooks, getBathing, } = data
   // console.log("getBathing=>", getBathing)
   // console.log("getAuthors=>", getAuthors)
+
+  const [addBooks, { er }] = useMutation(ADD_BOOKS)
+  const ADD = () => {
+    addBooks({
+      variables: {
+        id: 4,
+        title: "aaa",
+        author: "demo"
+      }
+    })
+    if (er) return <p>ADD Error</p>
+  }
+
+  const [updateBooks] = useMutation(UPDATE_BOOKS)
+  const UPDATE = (id) => {
+    updateBooks({
+      variables: {
+        id: id,
+        title: "update",
+        author: "update"
+      }
+    })
+  }
+
+  const [deleteBooks] = useMutation(DELETE_BOOKS)
+  const DELETE = (id) => {
+    console.log(id)
+    deleteBooks({
+      variables: {
+        id: id
+      }
+    })
+  }
+
   if (loading) return <p>Loading...</p>
   if (error && !data) return <p>Error</p>
 
@@ -51,14 +104,9 @@ function App() {
   // if (err && !da) return <p>BError :(</p>;
   // console.log("da=>",da)
 
-  // const [mutateFunction, { data, loading, error }] = useMutation(ADD_BOOKS);
-  // function mutateFunction() {
-  //   if (loading) return <p>MLoading...</p>;
-  //   if (error && !data) return <p>MError :(</p>;
-  // }
-
   return (
     <div>
+
       {data.getBooks.map((d) => (
         <div key={d.id}>
           <p>
@@ -66,8 +114,11 @@ function App() {
             {d.title}
             {d.author}
           </p>
+          <button onClick={() => DELETE(d.id)}>DELETE</button>
+          <button onClick={() => UPDATE(d.id)}>UPDATE</button>
         </div>
       ))}
+
       {data.getAuthors.map((d) => (
         <div key={d.id}>
           <p>
@@ -77,6 +128,8 @@ function App() {
           </p>
         </div>
       ))}
+
+      <button onClick={() => ADD()}>POST</button>
     </div>
   );
 }

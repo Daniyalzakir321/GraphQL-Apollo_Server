@@ -5,7 +5,7 @@ const bookSchema = new mongoose.Schema({
     title: String,
     author: String,
 })
-const Userdb = mongoose.model('book', bookSchema)
+const Studentdb = mongoose.model('book', bookSchema)
 
 // const salarySchema = new mongoose.Schema({
 //     salary: Boolean,
@@ -13,4 +13,4 @@ const Userdb = mongoose.model('book', bookSchema)
 // })
 // const Salarydb = mongoose.model('salaries', salarySchema)
 
-module.exports = {Userdb};
+module.exports = {Studentdb};

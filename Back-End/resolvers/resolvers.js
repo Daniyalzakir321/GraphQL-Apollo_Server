@@ -50,7 +50,7 @@ const resolvers = {
       const { title, author } = args.post
       const updates = {}
       if (title !== undefined) { updates.title = title }
-      if (author !== undefined) { author.title = author }
+      if (author !== undefined) { updates.author = author }
       console.log(id)
       const post = await Studentdb.findByIdAndUpdate(
         id,
@@ -70,7 +70,7 @@ const resolvers = {
       const { id } = args
       console.log(id)
       const post = await Studentdb.findByIdAndDelete(id)
-      return post
+      return 200
       // const post = StudBooks.splice(id, 1);
       // return 200
     },
